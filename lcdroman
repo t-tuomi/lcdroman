@@ -1,0 +1,180 @@
+#!/bin/bash
+
+
+# I = x
+#     x
+
+# V = x
+#
+
+# X =
+#     x
+
+function ntr {
+
+	ub=" "
+	lb=" "
+
+	case $1 in
+	0)
+	ub=" "
+	lb=" " # 0 (minutes)
+	;;
+
+	1)
+	ub="x"
+	lb="x"
+	;;
+
+	2)
+	ub="xx"
+	lb="xx"
+	;;
+
+	3)
+	ub="xxx"
+	lb="xxx" #III
+	;;
+
+	4)
+	ub="xx"
+	lb="x " #IV
+	;;
+
+	5)
+	ub="x"
+	lb=" "
+	;;
+
+	6)
+	ub="xx"
+	lb=" x"
+	;;
+
+	7)
+	ub="xxx"
+	lb=" xx"
+	;;
+
+	8)
+	ub="xxxx"
+	lb=" xxx" #VIII
+	;;
+
+	9)
+	ub="x "
+	lb="xx"
+	;;
+
+	10)
+	ub=" "
+	lb="x" #X
+	;;
+
+	11)
+	ub=" x"
+	lb="xx"
+	;;
+
+	12)
+	ub=" xx"
+	lb="xxx" #XII
+	;;
+
+	":")
+	ub="."
+	lb="."  #:
+	;;
+
+	"+")
+	ub=" "
+	lb=" "
+	;;
+
+#	"-")
+#	ub="--"
+#	lb="  "
+#	;;
+
+	"<")
+	ub="."
+	lb=" "
+	;;
+
+	*)
+	ub="...."
+	lb="...."
+	;;
+
+	esac
+
+	ul="$ul$ub"
+	ll="$ll$lb"
+
+}
+
+b="\x07"
+b="x"
+#e=" "
+st=0
+
+
+while true; do
+
+	ul=""
+	ll=""
+
+	h=`date "+%-l"`
+	m=`date "+%-M"`
+
+	if [ $st = 0 ]; then 
+		# for the first time set sleep end at 00,10,20,etc. minutes
+		st=$(( (10-(m%10))*6 )) 
+	else
+		st=60
+	fi
+
+	m=$(( m / 10 ))
+
+	ntr "$h"
+	ntr ":"
+	ntr "$m"
+
+	ul=$( echo "$ul" | sed 's/./& /g' )
+	ll=$( echo "$ll" | sed 's/./& /g' )
+
+#	pad=$(( 16-${#ul} ))
+
+	timestring=$( printf "$ul%*s$ll" $(( 16-${#ul} )) )
+	timestring=$( echo "$timestring" | sed 's/x/\x07/g' )
+
+	ul=""
+	ll=""
+	t=$( wget -qO- http://www.foreca.fi/Finland/Vantaa | \
+		egrep -o "strong>[-+]?[[:digit:]]+</strong> .C"  | egrep -o "[-+]?[[:digit:]]+" )
+#	t="+4"
+
+	if [ ${t:0:1} = "+" ]; then
+		ntr "."
+	elif [ ${t:0:1} = "-" ]; then
+		ntr "<"
+	else
+		: # no + or -
+	fi
+
+	ntr ${t:1}
+
+	ul=$( echo "$ul" | sed 's/./& /g' )
+	ll=$( echo "$ll" | sed 's/./& /g' )
+
+	tempstring=$( printf "$ul%*s$ll" $(( 16-${#ul} )) )
+	tempstring=$( echo "$tempstring" | sed 's/x/\x07/g' )
+
+#	echo -e "$ul\n$ll"
+	for i in {0..$st}; do
+		printf "$tempstring" > /dev/lcd0
+		sleep 5
+		printf "$timestring" > /dev/lcd0
+		sleep 5
+	done
+done
