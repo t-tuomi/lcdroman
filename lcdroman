@@ -81,6 +81,61 @@ function ntr {
 	lb="xxx" #XII
 	;;
 
+	13)
+	ub=" xxx"
+	lb="xxxx"
+	;;
+
+	14)
+	ub=" xx"
+	lb="xx "
+	;;
+
+	15)
+	ub=" x"
+	lb="x "
+	;;
+
+	16)
+	ub=" xx"
+	lb="x x"
+	;;
+
+	17)
+	ub=" xxx"
+	lb="x xx"
+	;;
+
+	18)
+	ub=" xxxx"
+	lb="x xxx"
+	;;
+
+	19)
+	ub=" x "
+	lb="xxx"
+	;;
+
+	20)
+	ub="  "
+	lb="xx"
+	;;
+
+	21)
+	ub="  x"
+	lb="xxx"
+	;;
+
+	22)
+	ub="  xx"
+	lb="xxxx"
+	;;
+
+	23)
+	ub="  xxx"
+	lb="xxxxx"
+	;;
+
 	":")
 	ub="."
 	lb="."  #:
