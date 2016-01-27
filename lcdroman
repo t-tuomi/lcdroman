@@ -136,6 +136,36 @@ function ntr {
 	lb="xxxxx"
 	;;
 
+	24)
+	ub="  xx"
+	lb="xxx "
+	;;
+
+	25)
+	ub="  x"
+	lb="xx "
+	;;
+
+	26)
+	ub="  xx"
+	lb="xx x"
+	;;
+
+	27)
+	ub="  xxx"
+	lb="xx xx"
+	;;
+
+	28)
+	ub="  xxxx"
+	lb="xx xxx"
+	;;
+
+	29)
+	ub="  x "
+	lb="xxxx"
+	;;
+
 	":")
 	ub="."
 	lb="."  #:
@@ -210,7 +240,7 @@ while true; do
 #	t="+4"
 
 	if [ ${t:0:1} = "+" ]; then
-		ntr "."
+		ntr "+"
 	elif [ ${t:0:1} = "-" ]; then
 		ntr "<"
 	else
